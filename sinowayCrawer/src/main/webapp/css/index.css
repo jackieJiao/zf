@@ -1,0 +1,43 @@
+body {
+	font-size: 14px;
+	font-family: "Microsoft YaHei", "宋体", Tahoma, Helvetica, Arial,
+		"\5b8b\4f53", sans-serif;
+	color: #333;
+}
+
+.sticky-header .logo {
+	position: static;
+}
+
+.info-number .badge {
+	background: #FF6C60;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 13px;
+	padding: 2px 5px;
+	position: absolute;
+	right: 8px;
+	top: -5px;
+	color: #fff;
+}
+
+.cisp-title {
+	font-size: 24px;
+	font-weight: normal;
+}
+
+.cisp-subtitle {
+	font-size: 22px;
+	font-weight: normal;
+	color:#61A5CC;
+}
+.main-tag{
+	margin: 10px 5px 15px 20px;
+	text-align: center;
+	border-radius:5px;
+}
+.main-tag-title{
+	position:absolute;top:20px;left:50px;
+}

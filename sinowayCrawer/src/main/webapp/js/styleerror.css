@@ -1,0 +1,24 @@
+
+#major {
+ 
+background:#cccccc;
+width:700px;
+height:400px; 
+
+}
+#div1  
+{  
+   background:#d800ff;  
+   width:700px;
+   height:40px; 
+   text-align:center;
+   line-height: 40px;  
+}  
+
+#p1{
+color:red;
+}
+#table_self tr td {
+ width:60px;
+ height:50px;
+}

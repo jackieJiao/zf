@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xmlns:context="http://www.springframework.org/schema/context"  
+        xmlns:mvc="http://www.springframework.org/schema/mvc"  
+        xmlns:util="http://www.springframework.org/schema/util" 
+        xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:task="http://www.springframework.org/schema/task"  
+        xsi:schemaLocation="  
+          http://www.springframework.org/schema/beans  
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+          http://www.springframework.org/schema/context  
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+          http://www.springframework.org/schema/mvc      
+          http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd  
+          http://www.springframework.org/schema/util   
+          http://www.springframework.org/schema/util/spring-util-3.0.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/aop
+          http://www.springframework.org/schema/aop/spring-aop.xsd
+          http://www.springframework.org/schema/task    
+          http://www.springframework.org/schema/task/spring-task-3.2.xsd"
+          >
+	<!-- 引入jdbc配置文件 -->  
+    <context:property-placeholder location="classpath:dataSource.properties" />
+    <!--创建jdbc数据源 -->  
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+	</bean>   
+    <!--spring jdbctemplate-->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+    
+    <!-- 创建SqlSessionFactory，同时指定数据源 -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <property name="mapperLocations" value="classpath:com/sinoway/sinowayCrawer/mapper/xml/*.xml" />  
+        <property name="typeAliasesPackage" value="com.sinoway.sinowayCrawer.entitys"/>
+    </bean>
+      
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>
+    <!-- 事务隔离级别配置 -->
+ 	<bean id="txInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref local="txManager"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">readOnly</prop>
+				<prop key="select*">readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 自动代理事务 -->
+  	<bean id="autoSellProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<value>txInterceptor</value>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>*Service*</value>
+			</list>
+		</property>
+	</bean>
+
+       
+  
+    <!-- 添加注解驱动 -->  
+    <mvc:annotation-driven />  
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" >
+<!--     	<property name="webBindingInitializer">
+			<bean class="com.sinoway.sinowayCrawer.utils.DateConverter" />
+		</property> -->
+    </bean>
+    <!-- jackson自动转换json配置 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" >  
+	    <property name="messageConverters">  
+	        <list>  
+	            <ref bean="mappingJacksonHttpMessageConverter"/>  
+	        </list>  
+	    </property>  
+	</bean>
+	<bean id="commonInterceptor" class="com.sinoway.sinowayCrawer.filter.CommonInterceptor"/>	
+	<!-- jackson自动转换json字符集配置 -->
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
+	    <property name="supportedMediaTypes">  
+	        <list>  
+	            <value>text/html;charset=UTF-8</value>  
+	        </list>  
+	    </property>  
+	</bean>
+    
+    <!-- 定义跳转的文件的前后缀 -->  
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个  
+              可用的url地址 -->  
+        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean> 
+    <!-- 拦截器 -->  
+    <mvc:interceptors>  
+        <!-- 多个拦截器,顺序执行 -->  
+        <mvc:interceptor>  
+        	<mvc:mapping path="/*"/>
+        	<bean class="com.sinoway.sinowayCrawer.filter.CommonInterceptor"></bean>
+        </mvc:interceptor>  
+    </mvc:interceptors> 
+    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="com.sinoway.sinowayCrawer.mapper"/>  
+    </bean>
+    
+     <bean id="loginAuthenticationSuccessHandler"  
+        class="com.sinoway.sinowayCrawer.utils.LoginAuthenticationSuccessHandler" /> 
+    
+    <!-- enables scanning for @Transactional annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+    <!-- 扫描com这个包里的所有类，把里面配上相应注解的类全都放在容器中进行管理 -->  
+    <context:component-scan base-package="com.sinoway.sinowayCrawer"/>
+</beans>
