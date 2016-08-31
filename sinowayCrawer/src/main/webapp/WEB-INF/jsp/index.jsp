@@ -69,10 +69,10 @@
 							<span>会员信息共享</span></a>
 						<ul class="sub-menu-list">
 							<li id="jinjianManage-menu"><a id="jinjianManage-menu-a"
-								href="javascript:void(0)" onclick="getHtml('')">列表找房
+								href="javascript:void(0)" onclick="getHtml('')">列表
 							</a></li>
 							<li id="contactManage-menu"><a id="contactManage-menu-a"
-								href="javascript:void(0)" onclick="getHtml('show')">地图找房</a></li>
+								href="javascript:void(0)" onclick="getHtml('show')">地图</a></li>
 							
 							
 						</ul>
@@ -144,12 +144,12 @@
 								<div class="col-md-2">
 									<a id="jinjianManage" href="javascript:void(0)"
 										onclick="getHtml('searchList')"
-										class="btn btn-primary btn-lg btn-block">列表找房</a>
+										class="btn btn-primary btn-lg btn-block">列表</a>
 								</div>
 								<div class="col-md-2">
 									<a id="contactManage" href="javascript:void(0)"
 										onclick="loadFunc()"
-										class="btn btn-primary btn-lg btn-block info-number">地图找房<span
+										class="btn btn-primary btn-lg btn-block info-number">地图<span
 										id="cntrctNum" class="badge"></span></a>
 								</div>
 
