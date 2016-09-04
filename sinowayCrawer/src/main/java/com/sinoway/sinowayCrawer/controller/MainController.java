@@ -8,11 +8,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 	protected static Logger logger=Logger.getLogger("controller");
+	
+	
 	@RequestMapping(value = "/bmap", method = RequestMethod.GET)
 	public String bmap(){
 		logger.debug("Received request to show common page");
+		
+		
 		return "baiduMaptest";  
 	}
+	
+	
+	
+	
+	
 	@RequestMapping(value = "/index")
 	public String getCommonPage(){
 		logger.debug("Received request to show common page");

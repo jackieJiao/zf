@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinoway.sinowayCrawer.dao.House_detailMapper" >
+  <resultMap id="BaseResultMap" type="com.sinoway.sinowayCrawer.entity.House_detail" >
+    <id column="hid" property="hid" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="CHAR" />
+    <result column="balcony" property="balcony" jdbcType="CHAR" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
+    <result column="rent_style" property="rentStyle" jdbcType="CHAR" />
+    <result column="house_address" property="houseAddress" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="admin_area" property="adminArea" jdbcType="CHAR" />
+    <result column="hprice" property="hprice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    hid, area, orientation, balcony, floor, rent_style, house_address, lng, lat, admin_area, 
+    hprice
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from house_detail
+    where hid = #{hid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from house_detail
+    where hid = #{hid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinoway.sinowayCrawer.entity.House_detail" >
+    insert into house_detail (hid, area, orientation, 
+      balcony, floor, rent_style, 
+      house_address, lng, lat, 
+      admin_area, hprice)
+    values (#{hid,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{orientation,jdbcType=CHAR}, 
+      #{balcony,jdbcType=CHAR}, #{floor,jdbcType=VARCHAR}, #{rentStyle,jdbcType=CHAR}, 
+      #{houseAddress,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, 
+      #{adminArea,jdbcType=CHAR}, #{hprice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinoway.sinowayCrawer.entity.House_detail" >
+    insert into house_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hid != null" >
+        hid,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
+      <if test="balcony != null" >
+        balcony,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="rentStyle != null" >
+        rent_style,
+      </if>
+      <if test="houseAddress != null" >
+        house_address,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="adminArea != null" >
+        admin_area,
+      </if>
+      <if test="hprice != null" >
+        hprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hid != null" >
+        #{hid,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=CHAR},
+      </if>
+      <if test="balcony != null" >
+        #{balcony,jdbcType=CHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="rentStyle != null" >
+        #{rentStyle,jdbcType=CHAR},
+      </if>
+      <if test="houseAddress != null" >
+        #{houseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="adminArea != null" >
+        #{adminArea,jdbcType=CHAR},
+      </if>
+      <if test="hprice != null" >
+        #{hprice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinoway.sinowayCrawer.entity.House_detail" >
+    update house_detail
+    <set >
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=CHAR},
+      </if>
+      <if test="balcony != null" >
+        balcony = #{balcony,jdbcType=CHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="rentStyle != null" >
+        rent_style = #{rentStyle,jdbcType=CHAR},
+      </if>
+      <if test="houseAddress != null" >
+        house_address = #{houseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="adminArea != null" >
+        admin_area = #{adminArea,jdbcType=CHAR},
+      </if>
+      <if test="hprice != null" >
+        hprice = #{hprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where hid = #{hid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinoway.sinowayCrawer.entity.House_detail" >
+    update house_detail
+    set area = #{area,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=CHAR},
+      balcony = #{balcony,jdbcType=CHAR},
+      floor = #{floor,jdbcType=VARCHAR},
+      rent_style = #{rentStyle,jdbcType=CHAR},
+      house_address = #{houseAddress,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      admin_area = #{adminArea,jdbcType=CHAR},
+      hprice = #{hprice,jdbcType=DECIMAL}
+    where hid = #{hid,jdbcType=VARCHAR}
+  </update>
+</mapper>
